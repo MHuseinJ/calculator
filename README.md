@@ -23,6 +23,7 @@ This application is a arithmetic calculator developed in the Go programming lang
 
 ## How to Use The Calculator
 ### 1. Clone this repository to your local machine.
+- `git clone git@github.com:MHuseinJ/calculator.git` or `git clone https://github.com/MHuseinJ/calculator.git`
 - if you haven't installed golang please do the installment
 - if you have please process to step 3
 
