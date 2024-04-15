@@ -66,6 +66,9 @@ func TestCalculator_ProceedInput(t *testing.T) {
 				command: "cancel",
 			},
 			want: float64(0),
+			mock: func() {
+
+			},
 		},
 	}
 	for _, tt := range tests {
@@ -160,13 +163,12 @@ func TestCalculator_ReadInput(t *testing.T) {
 			},
 			wantErr: true,
 		},
-
 		{
 			name: "testing input with no arg",
 			mock: func() {
-				mockUtil.EXPECT().Contains([]string{"add", "subtract", "multiply", "divide", "repeat"}, "devide").Return(false)
+				mockUtil.EXPECT().Contains([]string{"cancel", "exit", "abs", "neg", "sqrt", "sqr", "cubert", "cube"}, "sqr").Return(true)
 				mockUtil.EXPECT().Contains([]string{"add", "subtract", "multiply", "divide", "repeat"}, "sqr").Return(false)
-				mockMathEngine.EXPECT().Sqr(float64(0)).Return(float64(0))
+				mockMathEngine.EXPECT().Sqr(float64(8)).Return(float64(64))
 			},
 			fields: fields{
 				argCommands:   []string{"add", "subtract", "multiply", "divide", "repeat"},
@@ -230,20 +232,26 @@ func TestCalculator_repeat(t *testing.T) {
 				argCommands:   []string{"add", "subtract", "multiply", "divide", "repeat"},
 				noArgCommands: []string{"cancel", "exit", "abs", "neg", "sqrt", "sqr", "cubert", "cube"},
 				mathEngine:    mockMathEngine,
-				Commands:      []Command{},
+				Commands:      []Command{Command{"add", float64(2)}, Command{"multiply", float64(2)}},
 				util:          mockUtil,
 				lastValue:     0.0,
 			},
-			args:    args{},
-			want:    float64(0),
+			args: args{
+				result:   float64(0),
+				input:    float64(2),
+				commands: []Command{{"add", float64(2)}, {"multiply", float64(2)}},
+			},
+			want:    float64(4),
 			wantErr: false,
 			mock: func() {
-
+				mockMathEngine.EXPECT().Add(float64(0), float64(2)).Return(float64(2))
+				mockMathEngine.EXPECT().Multiply(float64(2), float64(2)).Return(float64(4))
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
+			tt.mock()
 			cal := &CalculatorInstance{
 				argCommands:   tt.fields.argCommands,
 				noArgCommands: tt.fields.noArgCommands,

@@ -50,3 +50,9 @@ our apps consist of 3 packages,
         - contains
         - readInputFloat
         - readInputString
+## Things to Improve
+- add more method to math engine to accommodate more features in calculator
+- adding native method for sqrt and cubert instead of using math
+- adding implementation of reading util method for other input that command line
+- unified readInputFloat and readInputString
+- move exit method to calculator engine so can be modified how to exit
